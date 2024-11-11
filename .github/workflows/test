@@ -1,0 +1,21 @@
+name: Create PR
+
+on:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+
+jobs:
+  create_pr:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build PR
+      run: |
+        git checkout -b pom-snapshot-updt
+        date >> file.txt
+        git commit -a -m "Update pom SNAPSHOT version" -m "A release just completed, this PR increments the SNAPSHOT version in pom.xml" --signoff
+        gh pr create --fill

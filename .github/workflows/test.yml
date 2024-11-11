@@ -23,5 +23,6 @@ jobs:
       run: |
         git checkout -b pom-snapshot-updt
         date >> file.txt
-        git commit -a -m "Update pom SNAPSHOT version" -m "A release just completed, this PR increments the SNAPSHOT version in pom.xml" --signoff
+        git add .
+        git commit -m "Update pom SNAPSHOT version" -m "A release just completed, this PR increments the SNAPSHOT version in pom.xml" --signoff
         gh pr create --fill

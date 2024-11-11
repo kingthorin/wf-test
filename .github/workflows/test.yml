@@ -3,7 +3,8 @@ name: Create PR
 on:
   workflow_dispatch:
 
-permissions:
+permissions: |
+  read-all
   pull-requests: write
 
 jobs:
@@ -22,6 +23,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        gh repo fork --clone --default-branch-only
         git checkout -b $BRANCH
         date >> file.txt
         git add .

@@ -3,8 +3,7 @@ name: Create PR
 on:
   workflow_dispatch:
 
-permissions: |
-  read-all
+permissions:
   pull-requests: write
 
 jobs:

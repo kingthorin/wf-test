@@ -57,8 +57,9 @@ jobs:
           # Update the index to be sure git is aware of changes
           git update-index -q --refresh
 
+          git diff 2>&1 >> diff.txt
           echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
-          echo $(git diff 2>&1) >> $GITHUB_STEP_SUMMARY
+          cat diff.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           
           ## If there are changes: comment, commit, PR

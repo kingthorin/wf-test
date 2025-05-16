@@ -58,7 +58,7 @@ jobs:
           git update-index -q --refresh
 
           echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
-          echo $(git diff) >> $GITHUB_STEP_SUMMARY
+          echo $(git diff 2>&1) >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           
           ## If there are changes: comment, commit, PR
@@ -71,4 +71,4 @@ jobs:
             # echo ${{ secrets.ZAPBOT_TOKEN }} | gh auth login --with-token
             # gh pr create --fill
 
-          # fi
+          fi

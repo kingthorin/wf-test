@@ -17,7 +17,6 @@ var FileWriter = Java.type('java.io.FileWriter');
 var PrintWriter = Java.type('java.io.PrintWriter');
 
 var YAML_FILE = OUTPUT_DIR + "/" + VULNERABILITY + ".yml";
-print(YAML_FILE);
 var fw = new FileWriter(YAML_FILE);
 var pw = new PrintWriter(fw);
 

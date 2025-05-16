@@ -58,6 +58,7 @@ jobs:
       - name: Raise a PR on the website
         run: |
           cd zaproxy-website
+          git status
 
           # Update the index to be sure git is aware of changes
           git update-index -q --refresh

@@ -56,14 +56,19 @@ jobs:
 
           # Update the index to be sure git is aware of changes
           git update-index -q --refresh
+          
+          echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
+          git diff >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          
           ## If there are changes: comment, commit, PR
-          if ! git diff-index --quiet HEAD --; then
+          # if ! git diff-index --quiet HEAD --; then
 
-            git add site/data/scans/benchmark/*
-            git commit -s -m "Updated OWASP Benchmark Results"
-            git push origin
+            # git add site/data/scans/benchmark/*
+            # git commit -s -m "Updated OWASP Benchmark Results"
+            # git push origin
 
-            echo ${{ secrets.ZAPBOT_TOKEN }} | gh auth login --with-token
-            gh pr create --fill
+            # echo ${{ secrets.ZAPBOT_TOKEN }} | gh auth login --with-token
+            # gh pr create --fill
 
-          fi
+          # fi

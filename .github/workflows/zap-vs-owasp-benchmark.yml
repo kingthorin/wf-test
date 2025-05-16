@@ -70,7 +70,7 @@ jobs:
           git diff 2>&1 > adiff
           cat adiff
           echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
-          echo fred >> #GITHUB_STEP_SUMMARY
+          echo fred >> $GITHUB_STEP_SUMMARY
           cat adiff >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           

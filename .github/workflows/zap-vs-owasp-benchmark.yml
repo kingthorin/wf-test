@@ -58,7 +58,7 @@ jobs:
           git update-index -q --refresh
           
           echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
-          git diff >> $GITHUB_STEP_SUMMARY
+          echo $(git diff) >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           
           ## If there are changes: comment, commit, PR

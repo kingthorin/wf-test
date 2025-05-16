@@ -71,5 +71,4 @@ jobs:
 
             # echo ${{ secrets.ZAPBOT_TOKEN }} | gh auth login --with-token
             # gh pr create --fill
-
           fi

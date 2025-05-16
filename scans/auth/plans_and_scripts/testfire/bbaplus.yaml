@@ -1,0 +1,61 @@
+env:
+  contexts:
+  - name: Authentication Test
+    urls:
+    - ${zapsite}
+    includePaths:
+    - ${zapsite}.*
+    authentication:
+      method: browser
+      parameters:
+        loginPageUrl: ${zaploginurl}
+        loginPageWait: 2
+        browserId: firefox-headless
+        steps:
+        - description: Fill Username
+          type: USERNAME
+          cssSelector: "#uid"
+          value: jsmith
+          timeout: 1000
+      verification:
+        method: autodetect
+    sessionManagement:
+      method: autodetect
+    users:
+    - name: testuser
+      credentials:
+        username: ${zapusername}
+        password: ${zappassword}
+jobs:
+- type: passiveScan-config
+  parameters:
+    disableAllRules: true
+  rules:
+  - name: Authentication Request Identified
+    id: 10111
+    threshold: medium
+  - name: Session Management Response Identified
+    id: 10112
+    threshold: medium
+  - name: Verification Request Identified
+    id: 10113
+    threshold: medium
+- type: requestor
+  parameters:
+    user: testuser
+  requests:
+  - url: ${zapsite}
+- type: passiveScan-wait
+  parameters: {}
+- name: auth-test-report
+  type: report
+  parameters:
+    template: auth-report-json
+    theme: null
+    reportDir: .
+    reportFile: auth-report.json
+    reportTitle: ZAP by Checkmarx Scanning Report
+  sections:
+  - summary
+  - afenv
+  - statistics

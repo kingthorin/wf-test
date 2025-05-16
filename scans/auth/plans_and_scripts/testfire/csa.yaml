@@ -1,0 +1,54 @@
+env:
+  contexts:
+  - name: Authentication Test
+    urls:
+    - ${zapsite}
+    includePaths:
+    - ${zapsite}.*
+    authentication:
+      method: client
+      parameters:
+        script: ./testfire.zst
+        scriptEngine: Mozilla Zest
+      verification:
+        method: autodetect
+    sessionManagement:
+      method: autodetect
+    users:
+    - name: testuser
+      credentials:
+        Username: ${zapusername}
+        Password: ${zappassword}
+jobs:
+- type: passiveScan-config
+  parameters:
+    disableAllRules: true
+  rules:
+  - name: Authentication Request Identified
+    id: 10111
+    threshold: medium
+  - name: Session Management Response Identified
+    id: 10112
+    threshold: medium
+  - name: Verification Request Identified
+    id: 10113
+    threshold: medium
+- type: requestor
+  parameters:
+    user: testuser
+  requests:
+  - url: ${zapsite}
+- type: passiveScan-wait
+  parameters: {}
+- name: auth-test-report
+  type: report
+  parameters:
+    template: auth-report-json
+    theme: null
+    reportDir: .
+    reportFile: auth-report.json
+    reportTitle: ZAP by Checkmarx Scanning Report
+  sections:
+  - summary
+  - afenv
+  - statistics

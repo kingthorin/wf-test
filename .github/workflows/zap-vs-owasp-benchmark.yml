@@ -31,48 +31,34 @@ jobs:
 
           # Update to the latest upstream
           cd zaproxy-website
-          # git remote set-url origin https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_USER/zaproxy-website.git
+          git remote set-url origin https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_USER/zaproxy-website.git
           git remote add upstream https://github.com/zaproxy/zaproxy-website.git
           git checkout -B owasp-benchmark
-          git fetch upstream
-          git merge --quiet upstream/main
+          git pull upstream main
           git reset --hard upstream/main
-          # git push --set-upstream origin owasp-benchmark --force
+          git push --set-upstream origin owasp-benchmark --force
 
       - name: Scan OWASP Benchmark
         run: |
-          pwd
-          ls
           cd zap-mgmt-scripts/scans/benchmark
-          ls -l
           mkdir results
           sections=( "cmdi" )
           for s in "${sections[@]}"
           do
             docker run --network=host --user=root -v $(pwd):/zap/wrk/:rw ghcr.io/zaproxy/zaproxy:nightly zap.sh \
               -cmd -silent -config scanner.injectable=15 -autorun /zap/wrk/$s/af-plan.yaml
-            cp results/$s.yaml ../../../zaproxy-website/site/data/scans/benchmark/ || true
-            cp results/$s.yml ../../../zaproxy-website/site/data/scans/benchmark/ || true
+            cp results/$s.yml ../../../zaproxy-website/site/data/scans/benchmark/
           done
-          ls results/
-          ls -l ../../../zaproxy-website/site/data/scans/benchmark/
 
       - name: Raise a PR on the website
         run: |
           cd zaproxy-website
-          ls
-          ls -l site/data/scans/benchmark/
-          git status
 
           # Update the index to be sure git is aware of changes
           git update-index -q --refresh
-          git diff
-          echo fred
-          git diff 2>&1 > adiff
-          cat adiff
-          echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
-          echo fred >> $GITHUB_STEP_SUMMARY
-          cat adiff >> $GITHUB_STEP_SUMMARY
+
+          echo "\`\`\`yaml" >> $GITHUB_STEP_SUMMARY
+          echo $(git diff) >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           
           ## If there are changes: comment, commit, PR

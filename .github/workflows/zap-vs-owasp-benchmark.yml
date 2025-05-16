@@ -51,6 +51,7 @@ jobs:
             docker run --network=host --user=root -v $(pwd):/zap/wrk/:rw ghcr.io/zaproxy/zaproxy:nightly zap.sh \
               -cmd -silent -config scanner.injectable=15 -autorun /zap/wrk/$s/af-plan.yaml
             cp results/$s.yaml ../../../zaproxy-website/site/data/scans/benchmark/
+            cp results/$s.yml ../../../zaproxy-website/site/data/scans/benchmark/
           done
           ls results/
           ls -l ../../../zaproxy-website/site/data/scans/benchmark/
@@ -58,6 +59,8 @@ jobs:
       - name: Raise a PR on the website
         run: |
           cd zaproxy-website
+          ls
+          ls -l site/data/scans/benchmark/
           git status
 
           # Update the index to be sure git is aware of changes

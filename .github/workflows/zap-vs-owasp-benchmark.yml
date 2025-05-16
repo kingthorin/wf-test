@@ -35,7 +35,7 @@ jobs:
           git remote add upstream https://github.com/zaproxy/zaproxy-website.git
           git checkout -B owasp-benchmark
           git fetch upstream
-          git merge upstream/main
+          git merge --quiet upstream/main
           git reset --hard upstream/main
           # git push --set-upstream origin owasp-benchmark --force
 

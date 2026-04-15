@@ -8,11 +8,9 @@ on:
       chrome_version:
         description: 'ChromeDriver version?'
         required: false
-        default: 'cxx'
       gecko_version:
         description: 'geckodriver version?'
         required: false
-        default: 'gxx'
 
 jobs:
   create_pr:

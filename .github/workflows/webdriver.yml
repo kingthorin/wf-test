@@ -8,9 +8,11 @@ on:
       chrome_version:
         description: 'ChromeDriver version?'
         required: false
+        default: 'cxx'
       gecko_version:
         description: 'geckodriver version?'
         required: false
+        default: 'gxx'
 
 jobs:
   create_pr:
@@ -37,14 +39,9 @@ jobs:
         echo $CHROME_INPUT
         CHROME_INPUT=${CHROME_INPUT:-"cxx" }
         echo $CHROME_INPUT
-        if [ "$CHROME_INPUT" == "cxx" ]; then
-          echo if
-          CHROME_VERS=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1"|jq -r '.[0].version')
-        elif [ $CHROME_INPUT == "cxx" ]; then
-          echo elif
+        if [ $CHROME_INPUT == "cxx" ]; then
           CHROME_VERS=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1"|jq -r '.[0].version')
         else
-          echo else
           CHROME_VERS=${{ github.event.inputs.chrome_version }}
         fi
         echo $CHROME_VERS
@@ -53,7 +50,7 @@ jobs:
         echo $GECKO_INPUT
         GECKO_INPUT=${GECKO_INPUT:-"gxx" }
         echo $GECKO_INPUT
-        if [ "$GECKO_INPUT" == "gxx" ]; then
+        if [ $GECKO_INPUT == "gxx" ]; then
           GECKO_VERS=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest|jq -r .name)
         else
           GECKO_VERS=${{ github.event.inputs.gecko_version }}
@@ -101,10 +98,8 @@ jobs:
           ./gradlew :aO:webdrivers:webdriverlinux:prepareRelease
           ./gradlew :aO:webdrivers:webdrivermacos:prepareRelease
           ./gradlew :aO:webdrivers:webdriverwindows:prepareRelease
-          echo $CHROME_VERS
-          echo "Would have created PR - $CHROME_VERS"
-          # git commit -a --amend --no-edit --signoff
-          # git push --set-upstream origin $BRANCH --force
-          # # Open the PR
-          # gh pr create -f
+          git commit -a --amend --no-edit --signoff
+          git push --set-upstream origin $BRANCH --force
+          # Open the PR
+          gh pr create -f
         fi
